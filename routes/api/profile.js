@@ -4,6 +4,7 @@ const config = require("config");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
+const normalize = require("normalize-url");
 
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
@@ -32,7 +33,6 @@ router.get("/me", auth, async (req, res) => {
 // @route   POST api/profile
 // @desc    Create or update a user profile
 // @access  Private
-
 router.post(
   "/",
   [
@@ -72,8 +72,10 @@ router.post(
     if (bio) profileFields.bio = bio;
     if (status) profileFields.status = status;
     if (githubusername) profileFields.githubusername = githubusername;
-    if (skills) {
+    if (!Array.isArray(skills)) {
       profileFields.skills = skills.split(",").map((skill) => skill.trim());
+    } else {
+      profileFields.skills = skills;
     }
 
     // Build social object

@@ -8,8 +8,8 @@ import { getProfiles } from "../../actions/profile";
 const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
   useEffect(() => {
     getProfiles();
-  }, []);
-
+  }, [getProfiles]);
+  console.log(profiles);
   return (
     <Fragment>
       {loading ? (
@@ -27,6 +27,11 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
                 <ProfileItem key={profile._id} profile={profile} />
               ))
             ) : (
+              // profiles.map((profile) => {
+              //   if (profile.user !== null) {
+              //     return <ProfileItem key={profile._id} profile={profile} />;
+              //   }
+              // })
               <h4>No profiles found...</h4>
             )}
           </div>
